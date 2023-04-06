@@ -1,0 +1,372 @@
+---
+title: "Database Acquisition"
+author: "Madie Munro"
+date: "4/6/2023"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE, error=FALSE}
+library(knitr)
+opts_chunk$set(echo=T)
+```
+
+# Introduction:
+
+## File Reading:
+
+**The following code chunk below imports in the needed libraries for table ripping: **
+
+```{r, error=FALSE, warning=FALSE}
+library(tidyverse)
+library(dplyr)
+library(naniar)
+library(stringr)
+```
+
+**Next, the original dataset was converted from an Excel file to a CSV in order to read in the data easier (see 03_incremental folder for the .csv data). In addition, a column lookup dataset was read in, containing the new names for the columns of the database; extra na values were dropped after table was read in: **
+
+```{r, error=FALSE, warning=FALSE}
+fish <- read_csv("C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/03_incremental/fish_info.csv")
+
+fish_cols <- read_csv("C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/01_input/column_lookup.csv")
+fish_cols <- drop_na(fish_cols)
+```
+
+## Column Renaming: 
+
+**The columns stored in "fish" were changed to reflect the new column names to be used in the updated database. This was accomplished by creating a subset of the "fish_cols" data, pivoting the data wider in order for the new column names to be the data column names, and then renaming each column name in "fish" to the column names in the subsetted data. Lastly, the column "FishIDX" was added to the end of the "fish" dataset: **
+
+```{r, error=FALSE, warning=FALSE}
+cols_sub <- fish_cols[, c("NewName", "ColDesc")]
+fcols <- pivot_wider(cols_sub, names_from = "NewName", values_from = "ColDesc")
+
+colnames(fish) = colnames(fcols)
+fish$FishIDX <- 1:nrow(fish)
+
+head(fish)
+```
+
+## Data Mutation: 
+
+**Some numeric column values gave a range of values rather than one set value, so they were split into two respective columns: low and high. The first column to be split as such was the one for water temerature: **
+
+```{r, warning=FALSE}
+fish_temps <-
+  fish$Temperature %>%
+  strsplit(split = "\u00B1|to") %>%
+  lapply(., function(x) { 
+    x <- 
+      as.vector(x)%>%
+      as.numeric 
+    if(length(x) == 2){
+      return(x)
+    }
+    else {
+      x <- rep(x,2)
+    }
+  }) %>% do.call(rbind, .) %>%
+as.data.frame(.)
+
+fish_temps_low <- fish_temps$V1
+fish_temps_low[8] <- (fish_temps$V1[8] - fish_temps$V2[8])
+fish_temps_low[113] <- (fish_temps$V1[113] - fish_temps$V2[113])
+fish_temps_low[114] <- (fish_temps$V1[114] - fish_temps$V2[114])
+
+fish_temps_high <- fish_temps$V2
+fish_temps_high[8] <- (fish_temps$V1[8] + fish_temps$V2[8])
+fish_temps_high[113] <- (fish_temps$V1[113] + fish_temps$V2[113])
+fish_temps_high[114] <- (fish_temps$V1[114] + fish_temps$V2[114])
+
+```
+
+**Swim variability also got the same treatment: **
+
+```{r, warning=FALSE}
+fish_swim_var_low <-
+  fish$SwimVariabilityValue %>%
+  str_match_all("[0-9.]+") %>% 
+  lapply(., function(x) {
+    x <- 
+      as.vector(x)%>%
+      as.numeric 
+    return(x[1])
+  })%>% unlist
+
+fish_swim_var_high <-
+  fish$SwimVariabilityValue %>%
+  str_match_all("[0-9.]+") %>% 
+  lapply(., function(x) {
+    x <- 
+      as.vector(x)%>%
+      as.numeric
+    ifelse(x[1] == "numeric(0)", replace_with_na(replace = x[1]), return(x[length(x)]))
+  }) %>% unlist
+```
+
+**Once the more problematic columns were appropriately split apart, each of the columns with numeric values were converted to be as such (character-to-numeric). Some values were converted to double, some were just integer. The modified data was stored under "fish_test": **
+
+```{r, warning=FALSE}
+fish_test <- fish %>%
+  mutate_at(c("MinSpeed", "MaxSpeed", "SwimSpeed", "SwimVariabilityValue", "MinLength", "MaxLength", "LengthValue", "LengthVariabilityValue",
+              "SwimTime", "MinTime", "MaxTime", "TimeBetweenIncrements", "VelocityIncrements", "SwimmingTimeAtMaxVelocity"), as.numeric) %>%
+  mutate(NumberOfFishTested = as.integer(NumberOfFishTested)) %>%
+  mutate(fish_temps_high = as.double(fish_temps_high)) %>%
+  mutate(fish_temps_low = as.double(fish_temps_low)) %>%
+  mutate(fish_swim_var_high = as.double(fish_swim_var_high)) %>%
+  mutate(fish_swim_var_low = as.double(fish_swim_var_low))
+
+head(fish_test)
+```
+
+**The last step taken before the full data was ripped into separate tables for SQL querying was the renaming of the new columns (low/high temp/swim variability) and replacing the question marks in the "Leap(y/n)" column with "na": **
+
+```{r, warning=FALSE}
+colnames(fish_test)[42] <- "WaterTempHigh" 
+colnames(fish_test)[43] <- "WaterTempLow" 
+colnames(fish_test)[44] <- "SwimVariabilityValueHigh"
+colnames(fish_test)[45] <- "SwimVariabilityValueLow"
+
+fish_test <- fish_test %>% replace_with_na_at(.vars = "Leap(Y/N)", condition = ~.x == "?")
+
+head(fish_test)
+```
+
+# Individual Table Creation: 
+
+## Subsetting Original Data:
+
+**The first step taken to create the individual database tables was to create multiple subsets of the original data based on the database relational model drafted (see 03_incremental for model): **
+
+```{r, warning=FALSE}
+fish_info <- fish_test[, c("FishIDX", "CommonName", "ScientificName")]
+
+swim_info <- fish_test[, c("SwimMode", "SwimSpeed", "SwimUnits", "SwimTime", "Leap(Y/N)")]
+
+fish_len_info <- fish_test[, c("LengthValue", "LengthUnits", "LengthType", "BD/TLRatio", "TL/SLRatio", "TL/FLRatio")]
+
+exp_method <- fish_test[, c("AveragingCoeff(Y/N)", "NumberOfFishTested", "TestMethod", "Reference", "DataReference", "Comments")]
+
+equation <- fish_test[, c("VelocityEquationGiven", "BurstCoeffA", "BurstCoeffB", "BurstCoeffC", "ProlongedCoeffA", "ProlongedCoeffB", "ProlongedCoeffC")]
+
+water_temp <- fish_test[, c("WaterTempLow", "WaterTempHigh")]
+
+swim_ex_info <- fish_test[, c("MinTime", "MaxTime", "TimeBetweenIncrements", "SwimmingTimeAtMaxVelocity", "VelocityIncrements")]
+
+swim_var <- fish_test[, c("MinSpeed", "MaxSpeed", "SwimUnits", "SwimVariabilityValueLow", "SwimVariabilityValueHigh", "SwimVariabilityType")]
+
+fish_len_var <- fish_test[, c("MinLength", "MaxLength", "LengthUnits", "LengthVariabilityValue", "LengthVariabilityType")]
+```
+
+## Adding/Rearranging Relational Model Columns: 
+
+**Since the database relational features columns in the tables not mentioned in the original database (ex: there aren't any unique ID values), they had to be created from scratch. This was done by creating two separate columns, one numeric and one string, and then uniting them together: **
+
+```{r, warning=FALSE}
+#Fish Information
+fish_info <- fish_info %>%
+  mutate(FishIDNum = row_number())
+fish_info <- fish_info %>%
+  mutate(FishIDStr = "FSH")
+fish_info <- fish_info %>%
+  unite(FishID, FishIDNum, FishIDStr, sep="")
+
+fish_info <- fish_info %>%
+  mutate(SwimIDNum = row_number())
+fish_info <- fish_info %>%
+  mutate(SwimIDStr = "SWM")
+fish_info <- fish_info %>%
+  unite(SwimID, SwimIDNum, SwimIDStr, sep="")
+
+fish_info <- fish_info %>%
+  mutate(ExpMethodIDNum = row_number())
+fish_info <- fish_info %>%
+  mutate(ExpMethodIDStr = "EXP")
+fish_info <- fish_info %>%
+  unite(ExpMethodID, ExpMethodIDNum, ExpMethodIDStr, sep="")
+
+#Swimming Information
+swim_info <- swim_info %>%
+  mutate(SwimIDNum = row_number())
+swim_info <- swim_info %>%
+  mutate(SwimIDStr = "SWM")
+swim_info <- swim_info %>%
+  unite(SwimID, SwimIDNum, SwimIDStr, sep="")
+
+swim_info <- swim_info %>%
+  mutate(SwimExIDNum = row_number())
+swim_info <- swim_info %>%
+  mutate(SwimExIDStr = "EXH")
+swim_info <- swim_info %>%
+  unite(SwimExID, SwimExIDNum, SwimExIDStr, sep="")
+
+swim_info <- swim_info %>%
+  mutate(WaterTempIDNum = row_number())
+swim_info <- swim_info %>%
+  mutate(WaterTempIDStr = "WTP")
+swim_info <- swim_info %>%
+  unite(WaterTempID, WaterTempIDNum, WaterTempIDStr, sep="")
+
+swim_info <- swim_info %>%
+  mutate(SwimVarIDNum = row_number())
+swim_info <- swim_info %>%
+  mutate(SwimVarIDStr = "SVR")
+swim_info <- swim_info %>%
+  unite(SwimVarID, SwimVarIDNum, SwimVarIDStr, sep="")
+
+swim_info <- swim_info %>%
+  mutate(EqIDNum = row_number())
+swim_info <- swim_info %>%
+  mutate(EqIDStr = "EQ")
+swim_info <- swim_info %>%
+  unite(EqID, EqIDNum, EqIDStr, sep="")
+
+swim_info <- swim_info %>%
+  mutate(SwimCentrTendMetric = "mean")
+
+swim_info <- swim_info %>%
+  mutate(TimeUnits = "s")
+
+#Equations
+equation <- equation %>%
+  mutate(EqIDNum = row_number())
+equation <- equation %>%
+  mutate(EqIDStr = "EQ")
+equation <- equation %>%
+  unite(EqID, EqIDNum, EqIDStr, sep="")
+
+#Water Temperature
+water_temp <- water_temp %>%
+  mutate(WaterTempIDNum = row_number())
+water_temp <- water_temp %>%
+  mutate(WaterTempIDStr = "WTP")
+water_temp <- water_temp %>%
+  unite(WaterTempID, WaterTempIDNum, WaterTempIDStr, sep="")
+
+water_temp <- water_temp %>% 
+  mutate(TempUnits = "C")
+
+#Swim Exhaustion Information
+swim_ex_info <- swim_ex_info %>%
+  mutate(SwimExIDNum = row_number())
+swim_ex_info <- swim_ex_info %>%
+  mutate(SwimExIDStr = "EXH")
+swim_ex_info <- swim_ex_info %>%
+  unite(SwimExID, SwimExIDNum, SwimExIDStr, sep="")
+
+swim_ex_info <- swim_ex_info %>%
+  mutate(TimeUnits = "s")
+
+swim_ex_info <- swim_ex_info %>%
+  mutate(VelocityUnits = "cm/s")
+
+#Swim Variability
+swim_var <- swim_var %>%
+  mutate(SwimVarIDNum = row_number())
+swim_var <- swim_var %>%
+  mutate(SwimVarIDStr = "SVR")
+swim_var <- swim_var %>%
+  unite(SwimVarID, SwimVarIDNum, SwimVarIDStr, sep="")
+
+swim_var <- swim_var %>%
+  mutate(SwimVariabilityUnits = "cm/s")
+
+#Fish Length Information
+fish_len_info <- fish_len_info %>%
+  mutate(FishIDNum = row_number())
+fish_len_info <- fish_len_info %>%
+  mutate(FishIDStr = "FSH")
+fish_len_info <- fish_len_info %>%
+  unite(FishID, FishIDNum, FishIDStr, sep="")
+
+fish_len_info <- fish_len_info %>%
+  mutate(FishVarIDNum = row_number())
+fish_len_info <- fish_len_info %>%
+  mutate(FishVarIDStr = "FVR")
+fish_len_info <- fish_len_info %>%
+  unite(FishVarID, FishVarIDNum, FishVarIDStr, sep="")
+
+fish_len_info <- fish_len_info %>%
+  mutate(LengthCentrTendMetric = "mean")
+
+#Fish Length Variability
+fish_len_var <- fish_len_var %>%
+  mutate(FishVarIDNum = row_number())
+fish_len_var <- fish_len_var %>%
+  mutate(FishVarIDStr = "FVR")
+fish_len_var <- fish_len_var %>%
+  unite(FishVarID, FishVarIDNum, FishVarIDStr, sep="")
+
+fish_len_var <- fish_len_var %>%
+  mutate(LengthVariabilityUnits = LengthUnits)
+
+#Experimental Method
+exp_method <- exp_method %>%
+  mutate(ExpMethodIDNum = row_number())
+exp_method <- exp_method %>%
+  mutate(ExpMethodIDStr = "EXP")
+exp_method <- exp_method %>%
+  unite(ExpMethodID, ExpMethodIDNum, ExpMethodIDStr, sep="")
+
+```
+
+**Next, the columns in each table were rearranged to closely match the order shown in the relational database model: **
+
+```{r, warning=FALSE}
+#Fish Information
+fish_info <- fish_info %>%
+  relocate(FishIDX, FishID, SwimID, ExpMethodID)
+
+#Swimming Information
+swim_info <- swim_info %>%
+  relocate(SwimID, SwimExID, WaterTempID, SwimVarID, EqID)
+swim_info <- swim_info %>%
+  relocate(SwimCentrTendMetric, .after = SwimMode)
+swim_info <- swim_info %>%
+  relocate(TimeUnits, .after = SwimTime)
+
+#Equation
+equation <- equation %>%
+  relocate(EqID)
+
+#Water Temperature
+water_temp <- water_temp %>%
+  relocate(WaterTempID)
+
+#Swim Exhaustion Information
+swim_ex_info <- swim_ex_info %>%
+  relocate(SwimExID)
+swim_ex_info <- swim_ex_info %>%
+  relocate(TimeUnits, .after = TimeBetweenIncrements)
+
+#Swimming Variability
+swim_var <- swim_var %>%
+  relocate(SwimVarID)
+
+#Fish Length Information
+fish_len_info <- fish_len_info %>%
+  relocate(FishID, FishVarID, LengthCentrTendMetric)
+
+#Fish Length Variability
+fish_len_var <- fish_len_var %>%
+  relocate(FishVarID)
+
+#Experimental Method
+exp_method <- exp_method %>%
+  relocate(ExpMethodID)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
