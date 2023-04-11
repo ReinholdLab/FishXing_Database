@@ -1,0 +1,157 @@
+"ExpMethodID","AveragingCoeff(Y/N)","NumberOfFishTested","TestMethod","Reference","DataReference","Comments"
+"1EXP",NA,NA,"NR","Beamish 1978",NA,NA
+"2EXP",NA,NA,"Methods unknown. Speeds read from graph in Bell 1991","Bell 1991",NA,"Fish length assumed to be total length.  The swimming speed reported is the center of the range reported by Bell 1991"
+"3EXP",NA,NA,"Methods unknown. Speeds read from graph in Bell 1991","Bell 1991",NA,"Fish length assumed to be total length.  The swimming speed reported is the center of the range reported by Bell 1991"
+"4EXP",NA,NA,"Methods unknown. Speeds read from graph in Bell 1991","Bell 1991",NA,"Fish length assumed to be total length.  The swimming speed reported is the center of the range reported by Bell 1991"
+"5EXP",NA,NA,"Methods unknown. Speeds read from graph in Bell 1991","Bell 1991",NA,"Fish length assumed to be total length.  The swimming speed reported is the center of the range reported by Bell 1991"
+"6EXP",NA,32,"Increased critical velocity","Stahlberg and Peckmann 1987",NA,"Stahlhberg and Peckmann (1987) list the scientific name as Noemacheilus barbatula. But this name has been updated according to information retrieved July 6 2007 from the Integrated Information System on-line database http://www.itis.gov."
+"7EXP",NA,31,"Gradually increased velocity until fish 'had difficulty' holding their position","Layher 1993 unpublished",NA,"Layher (1993) reports that he believes that velocities corresponding to 'difficulty holding' could be maintained for 'some time'; and fish would assuredly be able to traverse the short distances involved in passing through culverts."
+"8EXP","N",8,"Used mild electric shock to induce burst swimming and measured speeds maintained for a range of times (1 to 20 seconds.","Hunter and Mayor 1986","Bainbridge 1960","Eight goldfish were tested at 6 arbitrarily chosen times (1; 2.5; 3; 5; 10; 15; 20).  Swim speed was recorded for each test time."
+"9EXP",NA,NA,"Not reported","Bell 1991","Fry and Hart 1948","Bell (1991) cite Fry and Hart (1948) that averaged many measurements sustained for 20 to 25 minutes.  The mean weight of the fish tested was 4.37 grams at 25 degrees C. Fish of this size swam an average of 50.8 cm/s."
+"10EXP",NA,NA,"Not reported","Bell 1991","Fry and Hart 1948","Bell (1991) cite Fry and Hart (1948) that averaged many measurements sustained for 20 to 25 minutes.  The mean weight of the fish tested was 4.37 grams at 25 degrees C. Fish of this size swam an average of 50.8 cm/s."
+"11EXP",NA,NA,"Not reported","Bell 1991","Jones et al. 1974","Bell 1991 cites Jones et al. 1974 as the data source and states that 'Alaska data used to extend swimming speed to darting level'; it is not clear how Alaska data were used to estimate burst swimming speeds."
+"12EXP","Y",169,"Increased critical velocity","Hunter and Mayor 1986","Jones et al. 1974","Hunter and Mayor used Jones et al. 1974 as the data source and used the group average ''c'' coefficient."
+"13EXP",NA,169,"Increased critical velocity","Jones et al. 1974",NA,NA
+"14EXP","Y",20,"Increased critical velocity","Hunter and Mayor 1986","Jones et al. 1974",NA
+"15EXP",NA,20,"Increased critical velocity","Jones et al. 1974",NA,NA
+"16EXP",NA,23,"Increased critical velocity","Myrick and Cech 2000",NA,"Pooled mean and standard errors were calculated from data - given no significant differences were found.  Pooled mean and variance see Zarr (1984) pages 132 and 125 respectively."
+"17EXP",NA,20,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued","Bernatchez and Dodson 1985",NA,NA
+"18EXP",NA,8,"Increased critical velocity","Bernatchez and Dodson 1985",NA,NA
+"19EXP",NA,NA,"Not reported","Bell 1991","Jones et al. 1974","Bell 1991 cites Jones et al. 1974 as the data source and states that 'Alaska data used to extend swimming speed to darting level'; it is not clear how Alaska data were used to estimate burst swimming speeds."
+"20EXP",NA,159,"Increased critical velocity","Jones et al. 1974",NA,"The common name and genus and species name do not match.  Humpback whitefish are C. pidschian and lake whitefish are C. clupeaformis; I assume that the fish tested are C. clupeaformis given that they were from the MacKenzie River"
+"21EXP","Y",159,"Increased critical velocity","Hunter and Mayor 1986","Jones et al. 1974",NA
+"22EXP",NA,16,"Increased critical velocity","Bernatchez and Dodson 1985",NA,NA
+"23EXP",NA,8,"Increased critical velocity","Bernatchez and Dodson 1985",NA,NA
+"24EXP",NA,8,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued.","Bernatchez and Dodson 1985",NA,NA
+"25EXP",NA,9,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued.","Bernatchez and Dodson 1985",NA,NA
+"26EXP",NA,10,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued.","Bernatchez and Dodson 1985",NA,NA
+"27EXP",NA,10,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued","Bernatchez and Dodson 1985",NA,NA
+"28EXP",NA,10,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued","Bernatchez and Dodson 1985",NA,NA
+"29EXP",NA,10,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued","Bernatchez and Dodson 1985",NA,NA
+"30EXP",NA,7,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued","Bernatchez and Dodson 1985",NA,NA
+"31EXP",NA,20,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued","Bernatchez and Dodson 1985",NA,NA
+"32EXP",NA,20,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued","Bernatchez and Dodson 1985",NA,NA
+"33EXP",NA,20,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued","Bernatchez and Dodson 1985",NA,NA
+"34EXP",NA,8,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued","Bernatchez and Dodson 1985",NA,NA
+"35EXP",NA,33,"Increased critical velocity","Jones et al. 1974",NA,NA
+"36EXP","Y",33,"Increased critical velocity","Hunter and Mayor 1986","Jones et al. 1974",NA
+"37EXP",NA,6,"Fixed velocity test","Tsukamoto et al. 1975",NA,"The swim speed and time were read from a graph so they are approximate values."
+"38EXP",NA,NA,"Not reported","Bell 1991",NA,"The swimming speed reported is the center of the range reported by Bell 1991."
+"39EXP",NA,6,"Fixed velocity test","Tsukamoto et al. 1975",NA,"The swim speed and time were read from a graph so they are approximate values."
+"40EXP",NA,6,"Fixed velocity test","Tsukamoto et al. 1975",NA,NA
+"41EXP",NA,NA,"Not reported","Bell 1991",NA,"The swimming speed reported is the center of the range reported by Bell 1991."
+"42EXP",NA,192,"Increased critical velocity","Jones et al. 1974",NA,NA
+"43EXP","Y",192,"Increased critical velocity","Hunter and Mayor 1986","Jones et al. 1974",NA
+"44EXP",NA,9,"Increased velocity until fish had difficulty holding their position in test tank","Layher 1993 unpublished",NA,"The fish were collected by electroshocking which the author indicated may have affected the swimming speeds recorded."
+"45EXP",NA,29,"Increased velocity until fish had difficulty holding their position in test tank","Layher 1993 unpublished",NA,"The fish were collected by electroshocking which the author indicated may have affected the swimming speeds recorded."
+"46EXP",NA,8,"Increased velocity until fish had difficulty holding their position in test tank","Layher 1993 unpublished",NA,"The fish were collected by electroshocking which the author indicated may have affected the swimming speeds recorded."
+"47EXP",NA,43,"Increased critical velocity","Stahlberg and Peckmann 1987",NA,NA
+"48EXP",NA,90,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued (FV50)","Berry and Pimentel 1985",NA,NA
+"49EXP",NA,71,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued (FV50)","Berry and Pimentel 1985",NA,NA
+"50EXP",NA,85,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued (FV50)","Berry and Pimentel 1985",NA,NA
+"51EXP",NA,71,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued (FV50)","Berry and Pimentel 1985",NA,NA
+"52EXP",NA,85,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued (FV50)","Berry and Pimentel 1985",NA,NA
+"53EXP",NA,44,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued (FV50)","Berry and Pimentel 1985",NA,NA
+"54EXP",NA,59,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued (FV50)","Berry and Pimentel 1985",NA,NA
+"55EXP",NA,65,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued (FV50)","Berry and Pimentel 1985",NA,NA
+"56EXP",NA,44,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued (FV50)","Berry and Pimentel 1985",NA,NA
+"57EXP",NA,59,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued (FV50)","Berry and Pimentel 1985",NA,NA
+"58EXP",NA,65,"Fixed velocity test - measured fatigue time and determined velocity at 50% of fish fatigued (FV50)","Berry and Pimentel 1985",NA,NA
+"59EXP",NA,46,"Increased critical velocity","Stahlberg and Peckmann 1987",NA,NA
+"60EXP",NA,10,"Increased critical velocity","Swanson et al. 2002",NA,NA
+"61EXP",NA,10,"Increased velocity until fish could not hold their position in test tank","Layher and Ralston -1; unpublished",NA,"Mean velocity and the standard deviation reported was 24.77 cm/s ± 1.95.  The authors describe the endpoint as 'erratic movement which usually quickly terminated in exhaustion'."
+"62EXP",NA,NA,"Swam fish through a vertical slot fishway","Laine et al. 1998",NA,"The reported swim speed is the slot velocity that allowed passage; higher slot velocities (1.3 m/s) blocked upstream passage."
+"63EXP",NA,30,"video camera and test tank with grid","Moursund et al. 2003",NA,NA
+"64EXP",NA,24,"Increased critical velocity","Mesa et al. 2003",NA,NA
+"65EXP",NA,30,"Increased critical velocity","Moursund et al. 2000",NA,NA
+"66EXP",NA,30,"Increased critical velocity","Moursund et al. 2000",NA,NA
+"67EXP",NA,30,"Increased critical velocity","Moursund et al. 2003",NA,NA
+"68EXP",NA,5,"Increased critical velocity","Myrick and Cech 2000",NA,NA
+"69EXP",NA,8,"Increased critical velocity","Myrick and Cech 2000",NA,NA
+"70EXP",NA,6,"Increased critical velocity","Brett and Sutherland 1965",NA,NA
+"71EXP",NA,19,"100 % of fish still swimming after 14 minutes","Layher and Ralston-3 unpublished",NA,"Layher and Ralston (1993) swam fish at a fixed velocities of (cm/s): 16; 19; 22; 33; 39 and recorded percent still swimming at 2 minute intervals from 2 to 14 minutes."
+"72EXP",NA,11,"91% of fish still swimming after 8 minutes","Layher and Ralston-3 unpublished",NA,NA
+"73EXP",NA,16,"88% of fish still swimming after 2 minutes","Layher and Ralston-3 unpublished",NA,NA
+"74EXP",NA,14,"42% of fish still swimming after 2 minutes","Layher and Ralston-3 unpublished",NA,NA
+"75EXP",NA,38,"Increased critical velocity","Stahlberg and Peckmann 1987",NA,NA
+"76EXP","N",7,"Bursts induced by mild electric shock","Hunter and Mayor 1986","Bainbridge 1960","Bainbridge (1960) tested time to exhaustion between 1 and 20 seconds. The user may validly enter times to exhaustion between 1 and 20 seconds - the full range of burst swimming."
+"77EXP",NA,7,"Bursts induced by mild electric shock","Beamish 1978","Bainbridge 1960","Bainbridge (1960) induced burst speed with electric shock and measured speeds at arbitrary times of 1; 2; 5; 10; 15; 20 seconds using an oscilloscope."
+"78EXP",NA,7,"Bursts induced by mild electric shock","Beamish 1978","Bainbridge 1960","Bainbridge (1960) induced burst speed with electric shock and measured speeds at arbitrary times of 1; 2; 5; 10; 15; 20 seconds using an oscilloscope."
+"79EXP",NA,NA,"Not reported","Bell 1991","Jones et al. 1974","Bell 1991 cites Jones et al. 1974 as the data source and states that 'Alaska data used to extend swimming speed to darting level'; it is not clear how Alaska data was used to estimate burst swimming speeds."
+"80EXP",NA,56,"Increased critical velocity","Jones et al. 1974",NA,"Length-velocity correlation coefficient was not significant; caution should be used when using the regression equation."
+"81EXP","Y",53,"Increased critical velocity","Hunter and Mayor 1986","Jones et al. 1974","Hunter and Mayor 1986 used an assumed beta (not clear how it was derived). Length-velocity correlation coefficient was not significant; caution should be used when using the regression equation."
+"82EXP",NA,11,"Increased critical velocity","Bunt et al. 1999",NA,"The relationship between swim speed and fish length was significant.  The formula is valid for length range and time to exhaustion reported. The formula was converted from fish length in mm to m."
+"83EXP",NA,5,"Increased critical velocity","Farlinger and Beamish 1977",NA,"The formula given in the paper did not match the discussion or the graph.  The sign before the last set of numbers was changed (i.e. from ...+ 0.00061 (delta V)^2 to …- 0.00061 (delta V)^2."
+"84EXP",NA,5,"Increased critical velocity","Farlinger and Beamish 1977",NA,NA
+"85EXP",NA,5,"Increased critical velocity","Farlinger and Beamish 1977",NA,NA
+"86EXP",NA,5,"Increased critical velocity","Farlinger and Beamish 1977",NA,NA
+"87EXP",NA,15,"Increased critical velocity","Beamish 1970",NA,NA
+"88EXP",NA,15,"Increased critical velocity","Beamish 1970",NA,NA
+"89EXP",NA,15,"Increased critical velocity","Beamish 1970",NA,NA
+"90EXP",NA,15,"Increased critical velocity","Beamish 1970",NA,NA
+"91EXP",NA,15,"Increased critical velocity","Beamish 1970",NA,NA
+"92EXP",NA,15,"Increased critical velocity","Beamish 1970",NA,NA
+"93EXP",NA,NA,"Not reported","Bell 1991",NA,"The reported swim speed is the center of the range reported by Bell 1991.  Fish length assumed to be total length."
+"94EXP",NA,NA,"Not reported","Bell 1991",NA,"The reported swim speed is the center of the range reported by Bell 1991.  Fish length assumed to be total length."
+"95EXP",NA,NA,"Not reported","Bell 1991",NA,"The reported swim speed is the center of the range reported by Bell 1991.  Fish length assumed to be total length."
+"96EXP",NA,NA,"Not reported","Bell 1991",NA,"The reported swim speed is the center of the range reported by Bell 1991.  Fish length assumed to be total length."
+"97EXP","N",NA,"Fixed velocity test recorded number of fish swimming after 10 minutes or 30 minutes","Hunter and Mayor 1986","Kerr 1953","Number of fish tested varied by size range tested: length = 7.6-14.0 n = 1000; length = 8.9-14.0 n=680; length = 1.9-2.3 or 2.5-7.6 n=90."
+"98EXP",NA,NA,"Not reported","Bell 1991",NA,"The reported swim speed is the center of the range reported by Bell 1991.  Fish length assumed to be total length."
+"99EXP",NA,NA,"Not reported","Bell 1991",NA,"The reported swim speed is the center of the range reported by Bell 1991.  Fish length assumed to be total length."
+"100EXP",NA,NA,"Not reported","Bell 1991",NA,"The reported swim speed is the center of the range reported by Bell 1991.  Fish length assumed to be total length."
+"101EXP",NA,29,"Increased critical velocity","Myrick and Cech 2000",NA,"Pooled mean and standard errors were calculated from data - given no significant differences were found.  Pooled mean and variance see Zarr (1984) pages 132 and 125 respectively."
+"102EXP",NA,46,"Gradually increased velocity until fish 'had difficulty' holding their position","Layher 1993 unpublished",NA,"Layher (1993) reports that he believes that velocities corresponding to 'difficulty holding' could be maintained for 'some time'; and fish would assuredly be able to traverse the short distances involved in passing through culverts."
+"103EXP",NA,20,"Fixed velocity test. Endpoint 100% of 20 fish still swimming after 10 minutes","Layher and Ralston-2 unpublished",NA,NA
+"104EXP",NA,20,"Fixed velocity test. Endpoint 90% of 20 fish still swimming after 10 minutes","Layher and Ralston-2 unpublished",NA,NA
+"105EXP",NA,20,"Fixed velocity test. Endpoint 95% of 20 fish still swimming after 4 minutes","Layher and Ralston-2 unpublished",NA,NA
+"106EXP",NA,20,"Fixed velocity test. Endpoint 90% of 20 fish still swimming after 2 minutes","Layher and Ralston-2 unpublished",NA,NA
+"107EXP",NA,NA,"Not reported","Bell 1991",NA,"The swimming speed report is the center of the range reported by Bell 1991."
+"108EXP",NA,NA,"Not reported","Bell 1991",NA,"The swimming speed report is the center of the range reported by Bell 1991."
+"109EXP",NA,13,"Increased critical velocity","Hawkins and Quinn 1996",NA,"These data are from cutthroat trout obtained from the Washington State Hatchery at Aberdeen Washington.  They originated from anadromous fish."
+"110EXP",NA,23,"Increased critical velocity","Hawkins and Quinn 1996",NA,"These data are from cutthroat trout obtained from the Washington State Hatchery at Shelton Washington. They originated from anadromous fish"
+"111EXP",NA,31,"Increased critical velocity","Hawkins and Quinn 1996",NA,"These data are from cutthroat trout obtained from the Washington State Hatchery at Aberdeen Washington. They originated from anadromous fish.  They were crossed with steelhead from Washington State Hatchery at Aberdeen."
+"112EXP",NA,NA,"Swimming speeds estimated from leap heights of 3 to 4 feet.","Powers and Orsborn 1985 (part 4 of 4)",NA,"The burst speeds were derived from estimates of observed jump heights of 3 to 4 feet and should be used with caution."
+"113EXP","N",54,"Fixed velocity test recorded time to fatigue between 72 and 12000 sec","Hunter and Mayor 1986","Brett 1982",NA
+"114EXP",NA,7,"Increased critical velocity","Farrell et al. 2003",NA,NA
+"115EXP",NA,7,"Increased critical velocity","Smith and Carpenter 1987",NA,NA
+"116EXP",NA,8,"Increased critical velocity","Smith and Carpenter 1987",NA,NA
+"117EXP",NA,8,"Increased critical velocity","Smith and Carpenter 1987",NA,NA
+"118EXP",NA,NA,"Fish swam up chute of various velocities in tests of weir designs","Powers and Orsborn 1985 (part 4 of 4)",NA,"Speeds were observed by Powers and Orsborn (1985) fish swimming up a chute.  Swim speed is the center of the range observed by Powers and Orsborn (1985)."
+"119EXP","N",17,"Increased critical velocity","Hunter and Mayor 1986","Houston 1959","Because the time increment is very short 300 s (5 minutes) these speeds will be on the upper end of the prolonged speeds for juveniles of this species."
+"120EXP",NA,NA,"Swim speed estimated from a ratio of burst and prolonged based data from sockeye salmon","Aaserude and Orsborn 1985",NA,"This prolonged speed was derived by multiplying the ratio of prolonged/burst speed from sockeye salmon (10.2 fps/20.6 fps = 0.495) by the burst speed of chum salmon (0.495*10.6 fps = 5.2fps or 150 cm/s)."
+"121EXP",NA,8,"Increased critical velocity","Smith and Carpenter 1987",NA,"Chum are poor leapers and appear to need optimum hydraulic conditions to make successful leaps. Speed should not be interpreted as range of burst speeds of which chum are capable."
+"122EXP",NA,8,"Increased critical velocity","Smith and Carpenter 1987",NA,"Chum are poor leapers and appear to need optimum hydraulic conditions to make successful leaps."
+"123EXP",NA,8,"Increased critical velocity","Smith and Carpenter 1987",NA,"Chum are poor leapers and appear to need optimum hydraulic conditions to make successful leaps."
+"124EXP","N",5,"Based on tests using two different methods see comments","Hunter and Mayor 1986","Weaver 1963; Paulik and DeLacy 1957","Weaver 1963 methods: Maximum observed swimming speed through a 914 cm (30 ft) timing zone; Paulik and DeLacy 1957 methods: continuously increasing velocity over 5 minute period"
+"125EXP",NA,4,"Maximum observed swimming speed through a 30 ft timing zone.","Weaver 1963",NA,"I calculated the mean swimming speed and time based on the data in Table 21 page 117 of Weaver (1963)."
+"126EXP",NA,NA,"Unknown","Bell 1991",NA,"The swimming speed reported is the center of the range reported by Bell 1991."
+"127EXP","Y",11,"Increased velocity tests - using three different methods see comments","Hunter and Mayor 1986","Glova and McInerney 1977; Davis et al. 1963; Flagg et al. 1983; Howard 1975","Flagg et al. 1983 and Glova and McInerney 1977. Both authors time between increments 60 min 1/5 body lengths/s and 1/8 critical speed respectively."
+"128EXP","Y",8,"Increased velocity tests - using two different methods see comments","Hunter and Mayor 1986","Glova and McInerney 1977; Davis et al. 1963; Flagg et al. 1983","Flagg et al. 1983 and Glova and McInerney 1977. Both authors time between increments 60 min 1/5 body lengths/s and 1/8 critical speed respectively."
+"129EXP","Y",8,"Increased velocity tests - using three different methods see comments","Hunter and Mayor 1986","Glova and McInerney 1977; Davis et al. 1963; Dahlberg et al. 1968; Paulik and DeLacy 1957","Glova and McInerney 1977. Time between increments 60 min 1/8 critical speed.  Different authors used different length types i.e. total and fork length."
+"130EXP",NA,35,"Ramped increased critical velocity","Lee et al. 2003a and Lee et al. 2003b",NA,"I calculated the mean swimming speed and folk length from data presented in Tables 1 and 3 in Lee et al. 2003a and Table 1 in Lee et al. 2003b."
+"131EXP",NA,8,"Increased critical velocity","Smith and Carpenter 1987",NA,NA
+"132EXP",NA,8,"Increased critical velocity","Smith and Carpenter 1987",NA,NA
+"133EXP","N",4,"Applied electric shock to induce burst swimming used oscilloscope to record speed against time","Hunter and Mayor 1986","Bainbridge 1960","The trout used by Bainbridge 1960 were from Europe and he called them O. iridues"
+"134EXP",NA,6,"Increased critical velocity","Jones et al. 1974",NA,"Jones et al. 1974 tested wild and hatchery and found wild fish had a swim speed range and standard error that were twice those of hatchery fish.  Concluded variability in wild fish inherent."
+"135EXP",NA,7,"Increased critical velocity","Burgetz et al. 1998",NA,NA
+"136EXP",NA,11,"Increased critical velocity","Jain et al. 1997",NA,"The critical velocity was calculated from the mean of the three tests using Ucrit protocols means lengths were also calculated from the three means provided for fish used in the Ucrit protocol."
+"137EXP",NA,5,"Fixed velocity test measured time to exhaustion","Tsukamoto 1975",NA,"Oncorhynchus mykiss irideus"
+"138EXP",NA,15,"Increased critical velocity","Jones 1971",NA,"Oncorhynchus mykiss irideus"
+"139EXP",NA,14,"Increased critical velocity","Jones 1971",NA,"Oncorhynchus mykiss irideus"
+"140EXP","N",7,"Swam fish through an experimental bypass fishway at Bonneville Dam Washington","Hunter and Mayor 1986","Weaver 1963; Paulik and DeLacy 1957","The data for this velocity formula were from the fastest fish tested - so the upper speeds are probably faster than most steelhead can swim."
+"141EXP","N",31,"Data from different tests: fish swum through a fishway increasing velocity and electric shock to induce bursts.","Hunter and Mayor 1986","Bainbridge 1960; Weaver 1963; Paulik and DeLacy 1957","The data for this velocity formula includes both European rainbow and steelhead from Washington (USA).  Data from differing methods were combined reducing the confidence the user should have in this formula."
+"142EXP",NA,NA,"Not reported","Bell 1991",NA,"Bell (1991) cites several unpublished reports from the 1950s that were unavailable.  The methods used to develop these swim speeds is unknown."
+"143EXP",NA,NA,"Not reported","Bell 1991",NA,"Bell (1991) cites several unpublished reports from the 1950s that were unavailable.  The methods used to develop these swim speeds is unknown."
+"144EXP",NA,6,"Increased critical velocity","Jones et al. 1974",NA,"Jones et al. (1974) tested hatchery and wild steelhead to determine whether the extreme swim speed variability was due to handling stress or was inherent in wild populations - they concluded the variability was inherent in wild populations."
+"145EXP",NA,6,"Increased critical velocity","Jones et al. 1974",NA,"Jones et al. (1974) tested hatchery and wild steelhead to determine whether the extreme swim speed variability was due to handling stress or was inherent in wild populations - they concluded the variability was inherent in wild populations."
+"146EXP",NA,133,"Increased critical velocity","Hawkins and Quinn 1996",NA,"Converted body lengths per second to cm/s using mean fork length reported for steelhead."
+"147EXP",NA,NA,"Not reported","Bell 1991",NA,"The reported swim speed is the center of the range reported by Bell 1991.  Fish length assumed to be total length."
+"148EXP","N",41,"Fixed velocity test measured time to 50% fatigue in 300 minutes (Brett 1967) or 600 minutes (Brett 1964; 1982);","Hunter and Mayor 1986","Brett  1964; 1967; 1982",NA
+"149EXP","N",29,"Increased critical velocity","Brett 1965",NA,NA
+"150EXP",NA,20,"Increased critical velocity","Lee et al. 2003b",NA,"Fish migrate 400 km to spawning grounds"
+"151EXP",NA,6,"Increased critical velocity","Lee et al. 2003b",NA,"Fish migrate 1100 km to spawning grounds"
+"152EXP",NA,12,"Increased critical velocity","Lee et al. 2003b",NA,"Fish migrate 100 km to spawning grounds"
+"153EXP",NA,12,"Increased critical velocity","Lee et al. 2003b",NA,"Fish migrate 100 km to spawning grounds"
+"154EXP",NA,50,"Increased critical velocity","Taylor and Foote 1991",NA,NA
+"155EXP",NA,NA,"Increased critical velocity","Brett and Glass 1973","Brett 1964; 1965; 1967","The size range was not reported. I estimated fish size range from the reported literature"
+"156EXP",NA,NA,"Increased critical velocity","Brett and Glass 1973","Brett 1964; 1965; 1967","The size range was not reported. I estimated fish size range from the reported literature"

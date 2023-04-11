@@ -16,7 +16,7 @@ opts_chunk$set(echo=T)
 
 ## File Reading:
 
-**The following code chunk below imports in the needed libraries for table ripping: **
+**The following code chunk below imports the needed libraries for table ripping: **
 
 ```{r, error=FALSE, warning=FALSE}
 library(tidyverse)
@@ -25,7 +25,7 @@ library(naniar)
 library(stringr)
 ```
 
-**Next, the original dataset was converted from an Excel file to a CSV in order to read in the data easier (see 03_incremental folder for the .csv data). In addition, a column lookup dataset was read in, containing the new names for the columns of the database; extra na values were dropped after table was read in: **
+**Next, the original dataset was converted from an Excel file to a CSV file in order to read in the data easier (see 03_incremental folder for the .csv version of the data). In addition, a column lookup dataset was read in, containing the new names for the columns of the database as well as a description of the type of data stored in each respective colum. Lastly, extra na values were dropped after table was read in: **
 
 ```{r, error=FALSE, warning=FALSE}
 fish <- read_csv("C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/03_incremental/fish_info.csv")
@@ -36,7 +36,7 @@ fish_cols <- drop_na(fish_cols)
 
 ## Column Renaming: 
 
-**The columns stored in "fish" were changed to reflect the new column names to be used in the updated database. This was accomplished by creating a subset of the "fish_cols" data, pivoting the data wider in order for the new column names to be the data column names, and then renaming each column name in "fish" to the column names in the subsetted data. Lastly, the column "FishIDX" was added to the end of the "fish" dataset: **
+**The column names stored in "fish" were changed to reflect the new column names to be used in the updated database. This was accomplished by creating a subset of the "fish_cols" data, pivoting the data wider in order for the new column names to be the data column names, and then renaming each column name in "fish" to the column names in the subsetted data. Lastly, the column "FishIDX" was added to the end of the "fish" dataset to serve as an indexing variable for each data entry: **
 
 ```{r, error=FALSE, warning=FALSE}
 cols_sub <- fish_cols[, c("NewName", "ColDesc")]
@@ -44,13 +44,11 @@ fcols <- pivot_wider(cols_sub, names_from = "NewName", values_from = "ColDesc")
 
 colnames(fish) = colnames(fcols)
 fish$FishIDX <- 1:nrow(fish)
-
-head(fish)
 ```
 
 ## Data Mutation: 
 
-**Some numeric column values gave a range of values rather than one set value, so they were split into two respective columns: low and high. The first column to be split as such was the one for water temerature: **
+**Some numeric column values gave a range of values rather than one set value, so they were split into two respective columns: low and high. The first column to be split as such was the water temperature column (STILL WORKING ON IT CODEWISE): **
 
 ```{r, warning=FALSE}
 fish_temps <-
@@ -81,7 +79,7 @@ fish_temps_high[114] <- (fish_temps$V1[114] + fish_temps$V2[114])
 
 ```
 
-**Swim variability also got the same treatment: **
+**The swim variability column also got the same treatment: **
 
 ```{r, warning=FALSE}
 fish_swim_var_low <-
@@ -105,7 +103,7 @@ fish_swim_var_high <-
   }) %>% unlist
 ```
 
-**Once the more problematic columns were appropriately split apart, each of the columns with numeric values were converted to be as such (character-to-numeric). Some values were converted to double, some were just integer. The modified data was stored under "fish_test": **
+**Once the more problematic columns were appropriately split apart, each of the columns with numeric values were converted from character to numeric types. Some values were converted to double, some were converted to integer. The modified data was stored under "fish_test": **
 
 ```{r, warning=FALSE}
 fish_test <- fish %>%
@@ -117,10 +115,9 @@ fish_test <- fish %>%
   mutate(fish_swim_var_high = as.double(fish_swim_var_high)) %>%
   mutate(fish_swim_var_low = as.double(fish_swim_var_low))
 
-head(fish_test)
 ```
 
-**The last step taken before the full data was ripped into separate tables for SQL querying was the renaming of the new columns (low/high temp/swim variability) and replacing the question marks in the "Leap(y/n)" column with "na": **
+**The last steps taken before the full data was ripped into separate tables for SQL querying was the renaming of the new columns (low/high temp/swim variability) and replacing the question marks in the "Leap(y/n)" column with "na": **
 
 ```{r, warning=FALSE}
 colnames(fish_test)[42] <- "WaterTempHigh" 
@@ -130,14 +127,13 @@ colnames(fish_test)[45] <- "SwimVariabilityValueLow"
 
 fish_test <- fish_test %>% replace_with_na_at(.vars = "Leap(Y/N)", condition = ~.x == "?")
 
-head(fish_test)
 ```
 
 # Individual Table Creation: 
 
 ## Subsetting Original Data:
 
-**The first step taken to create the individual database tables was to create multiple subsets of the original data based on the database relational model drafted (see 03_incremental for model): **
+**The first step taken to create the individual database tables was to create multiple subsets of the wrangled data based on the database relational model drafted (see 03_incremental for model): **
 
 ```{r, warning=FALSE}
 fish_info <- fish_test[, c("FishIDX", "CommonName", "ScientificName")]
@@ -161,7 +157,7 @@ fish_len_var <- fish_test[, c("MinLength", "MaxLength", "LengthUnits", "LengthVa
 
 ## Adding/Rearranging Relational Model Columns: 
 
-**Since the database relational features columns in the tables not mentioned in the original database (ex: there aren't any unique ID values), they had to be created from scratch. This was done by creating two separate columns, one numeric and one string, and then uniting them together: **
+**Since the database relational model features columns in the tables not mentioned in the original or wrangled database (ex: there aren't any unique ID values), they had to be created from scratch. This was done by creating two separate columns, one numeric and one string, and then uniting them together. Additional units for certain measurements like swim velocity, fish length, and temperature were also added to tables in addition to a column for the central tendency metric used for numeric measurements: **
 
 ```{r, warning=FALSE}
 #Fish Information
@@ -311,7 +307,7 @@ exp_method <- exp_method %>%
 
 ```
 
-**Next, the columns in each table were rearranged to closely match the order shown in the relational database model: **
+**Next, the columns in each table were rearranged to match the order shown in the relational database model: **
 
 ```{r, warning=FALSE}
 #Fish Information
@@ -357,8 +353,21 @@ exp_method <- exp_method %>%
   relocate(ExpMethodID)
 ```
 
+# Table Export:
 
+**Once the tables were created, they were exported as .csv files to be leater read in to SQL (see 04_product folder to view the tables): **
 
+```{r}
+write.csv(fish_info, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/fish_info.csv", row.names = F)
+write.csv(swim_info, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/swim_info.csv", row.names = F)
+write.csv(equation, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/equation.csv", row.names = F)
+write.csv(water_temp, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/water_temp.csv", row.names = F)
+write.csv(swim_ex_info, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/swim_ex_info.csv", row.names = F)
+write.csv(swim_var, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/swim_var.csv", row.names = F)
+write.csv(fish_len_info, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/fish_len_info.csv", row.names = F)
+write.csv(fish_len_var, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/fish_len_var.csv", row.names = F)
+write.csv(exp_method, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/exp_method.csv", row.names = F)
+```
 
 
 
