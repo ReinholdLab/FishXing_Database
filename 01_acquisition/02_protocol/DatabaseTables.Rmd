@@ -48,34 +48,52 @@ fish$FishIDX <- 1:nrow(fish)
 
 ## Data Mutation: 
 
-**Some numeric column values gave a range of values rather than one set value, so they were split into two respective columns: low and high. The first column to be split as such was the water temperature column (STILL WORKING ON IT CODEWISE): **
+**Some numeric column values gave a range of values rather than one set value, so they were split into two respective columns: low and high. The first column to be split as such was the water temperature column: **
 
 ```{r, warning=FALSE}
+
+#creates a variable with the old temp measurements
 fish_temps <-
-  fish$Temperature %>%
-  strsplit(split = "\u00B1|to") %>%
-  lapply(., function(x) { 
-    x <- 
-      as.vector(x)%>%
-      as.numeric 
-    if(length(x) == 2){
-      return(x)
-    }
-    else {
-      x <- rep(x,2)
-    }
-  }) %>% do.call(rbind, .) %>%
-as.data.frame(.)
+  fish$Temperature
+
+#correctly splits up values with as plus-minus (ex: 15 plus-minus 3 is split up as 12, 18)
+pm <- which(str_detect(fish_temps, "\u00B1"))
+fish_temps <- as.list(fish_temps)
+lapply(pm, function(i){
+  tempval <- strsplit(fish_temps[[i]][1], split = "\u00B1")[[1]] %>%
+    as.numeric
+  tempval <- tempval[1] + c(-1,1)*tempval[2] 
+  
+  fish_temps[[i]] <<- tempval
+})
+
+#correctly splits up values with a "to" in them (ex: 12 to 19 is spit up as 12, 19)
+to <- which(str_detect(fish_temps, "to"))
+fish_temps <- as.list(fish_temps)
+lapply(to, function(i){
+  tempVal <- strsplit(fish_temps[[i]][1], split = "to")[[1]] %>%
+    as.numeric
+  fish_temps[[i]] <<- tempVal
+})
+
+#turns list elements into two separate dataframe columns
+fish_temps <- lapply(fish_temps, function(x) { 
+  x <- 
+    as.vector(x)%>%
+    as.numeric 
+  if(length(x) == 2){
+    return(x)
+  }
+  else {
+    x <- rep(x,2)
+  }
+}) %>% do.call(rbind, .) %>% 
+  as.data.frame(.)
+
+#creates low and high temp columns
 
 fish_temps_low <- fish_temps$V1
-fish_temps_low[8] <- (fish_temps$V1[8] - fish_temps$V2[8])
-fish_temps_low[113] <- (fish_temps$V1[113] - fish_temps$V2[113])
-fish_temps_low[114] <- (fish_temps$V1[114] - fish_temps$V2[114])
-
 fish_temps_high <- fish_temps$V2
-fish_temps_high[8] <- (fish_temps$V1[8] + fish_temps$V2[8])
-fish_temps_high[113] <- (fish_temps$V1[113] + fish_temps$V2[113])
-fish_temps_high[114] <- (fish_temps$V1[114] + fish_temps$V2[114])
 
 ```
 
