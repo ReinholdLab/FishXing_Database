@@ -7,9 +7,14 @@ output:
   html_document: default
 ---
 
+# Please add note to indicate how to set the global options re working directory fun.
+
 ```{r setup, include=FALSE, error=FALSE}
 library(knitr)
+library(here)
 opts_chunk$set(echo=T)
+# knitr::opts_knit$set(root.dir = '.')
+source(here("01_acquisition/02_protocol/split_utils.R"))
 ```
 
 # Introduction:
@@ -25,12 +30,16 @@ library(naniar)
 library(stringr)
 ```
 
-**Next, the original dataset was converted from an Excel file to a CSV file in order to read in the data easier (see 03_incremental folder for the .csv version of the data). In addition, a column lookup dataset was read in, containing the new names for the columns of the database as well as a description of the type of data stored in each respective colum. Lastly, extra na values were dropped after table was read in: **
+**Next, the original dataset was converted from an Excel file to a CSV file in order to read in the data easier (see 03_incremental folder for the .csv version of the data). In addition, a column lookup dataset was read in, containing the new names for the columns of the database as well as a description of the type of data stored in each respective column. Lastly, extra na values were dropped after the table was read in: **
 
 ```{r, error=FALSE, warning=FALSE}
-fish <- read_csv("C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/03_incremental/fish_info.csv")
+fish <- 
+  # read_csv("C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/03_incremental/fish_info.csv")
+  read_csv("./01_acquisition/03_incremental/fish_info.csv")
 
-fish_cols <- read_csv("C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/01_input/column_lookup.csv")
+fish_cols <- 
+  # read_csv("C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/01_input/column_lookup.csv")
+  read_csv("./01_acquisition/01_input/column_lookup.csv")  
 fish_cols <- drop_na(fish_cols)
 ```
 
@@ -50,31 +59,48 @@ fish$FishIDX <- 1:nrow(fish)
 
 **Some numeric column values gave a range of values rather than one set value, so they were split into two respective columns: low and high. The first column to be split as such was the water temperature column: **
 
-```{r, warning=FALSE}
+```{r, warning=FALSE, results='hide'}
 
 #creates a variable with the old temp measurements
 fish_temps <-
-  fish$Temperature
+  fish$Temperature %>%
+  as.list() 
 
 #correctly splits up values with as plus-minus (ex: 15 plus-minus 3 is split up as 12, 18)
-pm <- which(str_detect(fish_temps, "\u00B1"))
-fish_temps <- as.list(fish_temps)
-lapply(pm, function(i){
-  tempval <- strsplit(fish_temps[[i]][1], split = "\u00B1")[[1]] %>%
-    as.numeric
-  tempval <- tempval[1] + c(-1,1)*tempval[2] 
-  
-  fish_temps[[i]] <<- tempval
-})
+# pm <- which(str_detect(fish_temps, "\u00B1"))
+# fish_temps <- as.list(fish_temps)
+# lapply(pm, function(i){
+#   tempval <- strsplit(fish_temps[[i]][1], split = "\u00B1")[[1]] %>%
+#     as.numeric
+#   tempval <- tempval[1] + c(-1,1)*tempval[2] 
+#   
+#   fish_temps[[i]] <<- tempval
+# })
+fish_temps_to_replace <-
+  pm_split(fish_temps) 
+fish_temps_to_replace <-
+  c(fish_temps_to_replace,
+  char_split(fish_temps, "to")) 
+# same thing here with dup function
+
+
+lapply(
+  fish_temps_to_replace,
+  function(idx){
+    item_in_fish_temps_list <- idx[[1]]
+    fish_temps[[item_in_fish_temps_list]] <<- idx[[2]]
+  }
+)
 
 #correctly splits up values with a "to" in them (ex: 12 to 19 is spit up as 12, 19)
-to <- which(str_detect(fish_temps, "to"))
-fish_temps <- as.list(fish_temps)
-lapply(to, function(i){
-  tempVal <- strsplit(fish_temps[[i]][1], split = "to")[[1]] %>%
-    as.numeric
-  fish_temps[[i]] <<- tempVal
-})
+# to <- which(str_detect(fish_temps, "to"))
+# fish_temps <- as.list(fish_temps)
+# lapply(to, function(i){
+#   tempVal <- strsplit(fish_temps[[i]][1], split = "to")[[1]] %>%
+#     as.numeric
+#   fish_temps[[i]] <<- tempVal
+# })
+
 
 #turns list elements into two separate dataframe columns
 fish_temps <- lapply(fish_temps, function(x) { 
