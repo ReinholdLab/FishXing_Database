@@ -7,7 +7,15 @@ output:
   html_document: default
 ---
 
-# Please add note to indicate how to set the global options re working directory fun.
+# R Setup:
+
+**In order to set the correct project directory for this stage of development, go to:**
+
+*Tools > Global Options > R Markdown*
+
+**Once there, set "Evaluate chunks in directory" from "Document" to "Project." Then, select "Apply" and hit "OK" when done.**
+
+**The code chunk below imports libraries needed for R setup including knitr to knit the file to Word or HTML and here to read in the utility R file used for certain functions for data wrangling. It will not display when knitted to Word or HTML.**
 
 ```{r setup, include=FALSE, error=FALSE}
 library(knitr)
@@ -23,7 +31,7 @@ source(here("01_acquisition/02_protocol/split_utils.R"))
 
 **The following code chunk below imports the needed libraries for table ripping: **
 
-```{r, error=FALSE, warning=FALSE}
+```{r, error=FALSE, warning=FALSE, results='hide'}
 library(tidyverse)
 library(dplyr)
 library(naniar)
@@ -32,20 +40,18 @@ library(stringr)
 
 **Next, the original dataset was converted from an Excel file to a CSV file in order to read in the data easier (see 03_incremental folder for the .csv version of the data). In addition, a column lookup dataset was read in, containing the new names for the columns of the database as well as a description of the type of data stored in each respective column. Lastly, extra na values were dropped after the table was read in: **
 
-```{r, error=FALSE, warning=FALSE}
+```{r, error=FALSE, warning=FALSE, results='hide'}
 fish <- 
-  # read_csv("C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/03_incremental/fish_info.csv")
   read_csv("./01_acquisition/03_incremental/fish_info.csv")
 
 fish_cols <- 
-  # read_csv("C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/01_input/column_lookup.csv")
   read_csv("./01_acquisition/01_input/column_lookup.csv")  
 fish_cols <- drop_na(fish_cols)
 ```
 
 ## Column Renaming: 
 
-**The column names stored in "fish" were changed to reflect the new column names to be used in the updated database. This was accomplished by creating a subset of the "fish_cols" data, pivoting the data wider in order for the new column names to be the data column names, and then renaming each column name in "fish" to the column names in the subsetted data. Lastly, the column "FishIDX" was added to the end of the "fish" dataset to serve as an indexing variable for each data entry: **
+**The column names stored in "fish" were changed to reflect the new column names to be used in the updated database. This was accomplished by creating a subset of the "fish_cols" data, pivoting the data wider in order for the new column names to be the dataframe column names, and then renaming each column name in "fish" to the column names in the subsetted data. Lastly, the column "FishIDX" was added to the end of the "fish" dataset to serve as an indexing variable for each data entry: **
 
 ```{r, error=FALSE, warning=FALSE}
 cols_sub <- fish_cols[, c("NewName", "ColDesc")]
@@ -57,7 +63,7 @@ fish$FishIDX <- 1:nrow(fish)
 
 ## Data Mutation: 
 
-**Some numeric column values gave a range of values rather than one set value, so they were split into two respective columns: low and high. The first column to be split as such was the water temperature column: **
+**Some numeric column values gave a range of values rather than one set value, so they were split into two respective columns: low and high. The first column to be split as such was the water temperature column. This was achieved by the utility file, "split_utils.R, " which contains two functions: one for splitting specifically on the plus-minus character and one general character splitting function (see 01_acqusition/02_protocol/split_utils.R for code):**
 
 ```{r, warning=FALSE, results='hide'}
 
@@ -66,23 +72,12 @@ fish_temps <-
   fish$Temperature %>%
   as.list() 
 
-#correctly splits up values with as plus-minus (ex: 15 plus-minus 3 is split up as 12, 18)
-# pm <- which(str_detect(fish_temps, "\u00B1"))
-# fish_temps <- as.list(fish_temps)
-# lapply(pm, function(i){
-#   tempval <- strsplit(fish_temps[[i]][1], split = "\u00B1")[[1]] %>%
-#     as.numeric
-#   tempval <- tempval[1] + c(-1,1)*tempval[2] 
-#   
-#   fish_temps[[i]] <<- tempval
-# })
+#correctly splits up values that are ranges or plus-minus values (ex: 15 plus-minus 3, 12 to 19)
 fish_temps_to_replace <-
   pm_split(fish_temps) 
 fish_temps_to_replace <-
   c(fish_temps_to_replace,
-  char_split(fish_temps, "to")) 
-# same thing here with dup function
-
+  char_split(fish_temps, "to"))
 
 lapply(
   fish_temps_to_replace,
@@ -91,16 +86,6 @@ lapply(
     fish_temps[[item_in_fish_temps_list]] <<- idx[[2]]
   }
 )
-
-#correctly splits up values with a "to" in them (ex: 12 to 19 is spit up as 12, 19)
-# to <- which(str_detect(fish_temps, "to"))
-# fish_temps <- as.list(fish_temps)
-# lapply(to, function(i){
-#   tempVal <- strsplit(fish_temps[[i]][1], split = "to")[[1]] %>%
-#     as.numeric
-#   fish_temps[[i]] <<- tempVal
-# })
-
 
 #turns list elements into two separate dataframe columns
 fish_temps <- lapply(fish_temps, function(x) { 
@@ -125,26 +110,37 @@ fish_temps_high <- fish_temps$V2
 
 **The swim variability column also got the same treatment: **
 
-```{r, warning=FALSE}
-fish_swim_var_low <-
+```{r, warning=FALSE, results='hide'}
+swim_var_temp <-
   fish$SwimVariabilityValue %>%
-  str_match_all("[0-9.]+") %>% 
-  lapply(., function(x) {
-    x <- 
-      as.vector(x)%>%
-      as.numeric 
-    return(x[1])
-  })%>% unlist
+  as.list()
 
-fish_swim_var_high <-
-  fish$SwimVariabilityValue %>%
-  str_match_all("[0-9.]+") %>% 
-  lapply(., function(x) {
-    x <- 
-      as.vector(x)%>%
-      as.numeric
-    ifelse(x[1] == "numeric(0)", replace_with_na(replace = x[1]), return(x[length(x)]))
-  }) %>% unlist
+swim_var_to_replace <-
+  char_split(swim_var_temp)
+
+lapply(
+  swim_var_to_replace,
+  function(idx){
+    item_in_swim_var_list <- idx[[1]]
+    swim_var_temp[[item_in_swim_var_list]] <<- idx[[2]]
+  }
+)
+
+swim_var_temp <- lapply(swim_var_temp, function(x) { 
+  x <- 
+    as.vector(x)%>%
+    as.numeric 
+  if(length(x) == 2){
+    return(x)
+  }
+  else {
+    x <- rep(x,2)
+  }
+}) %>% do.call(rbind, .) %>% 
+  as.data.frame(.)
+
+fish_swim_var_low <- swim_var_temp$V1
+fish_swim_var_high <-swim_var_temp$V2
 ```
 
 **Once the more problematic columns were appropriately split apart, each of the columns with numeric values were converted from character to numeric types. Some values were converted to double, some were converted to integer. The modified data was stored under "fish_test": **
@@ -399,18 +395,18 @@ exp_method <- exp_method %>%
 
 # Table Export:
 
-**Once the tables were created, they were exported as .csv files to be leater read in to SQL (see 04_product folder to view the tables): **
+**Once the tables were created, they were exported as .csv files to be later read in to SQL (see 04_product folder to view the tables): **
 
 ```{r}
-write.csv(fish_info, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/fish_info.csv", row.names = F)
-write.csv(swim_info, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/swim_info.csv", row.names = F)
-write.csv(equation, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/equation.csv", row.names = F)
-write.csv(water_temp, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/water_temp.csv", row.names = F)
-write.csv(swim_ex_info, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/swim_ex_info.csv", row.names = F)
-write.csv(swim_var, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/swim_var.csv", row.names = F)
-write.csv(fish_len_info, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/fish_len_info.csv", row.names = F)
-write.csv(fish_len_var, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/fish_len_var.csv", row.names = F)
-write.csv(exp_method, "C:/Users/s69m456/Desktop/FishXing(HEC-RAS) Independent Study/R_database_work/01_acquisition/04_product/exp_method.csv", row.names = F)
+write.csv(fish_info, "./01_acquisition/04_product/fish_info.csv", row.names = F)
+write.csv(swim_info, "./01_acquisition/04_product/swim_info.csv", row.names = F)
+write.csv(equation, "./01_acquisition/04_product/equation.csv", row.names = F)
+write.csv(water_temp, "./01_acquisition/04_product/water_temp.csv", row.names = F)
+write.csv(swim_ex_info, "./01_acquisition/04_product/swim_ex_info.csv", row.names = F)
+write.csv(swim_var, "./01_acquisition/04_product/swim_var.csv", row.names = F)
+write.csv(fish_len_info, "./01_acquisition/04_product/fish_len_info.csv", row.names = F)
+write.csv(fish_len_var, "./01_acquisition/04_product/fish_len_var.csv", row.names = F)
+write.csv(exp_method, "./01_acquisition/04_product/exp_method.csv", row.names = F)
 ```
 
 

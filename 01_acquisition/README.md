@@ -8,7 +8,7 @@ This folder contains the input to be used for this stage of FishXing Database de
 
 ## 02_protocol:
 
-This folder contains the R Markdown file containing the proceedure(s) used to acquire and wrangle data from the original database into new database tables.
+This folder contains the R Markdown file containing the procedure(s) used to acquire and wrangle data from the original database into new database tables.
 
 ## 03_incremental:
 
